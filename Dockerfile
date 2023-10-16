@@ -12,9 +12,15 @@ WORKDIR /app
 
 # PC上のGemfile を .（/app）にコピー
 COPY Gemfile .
+COPY Gemfile.lock .
+COPY vendor ./vendor
+
+# gemの保存先をvendor/bundleに切り替える設定
+# 通常は不要だが、ダウンロードしたgemをgitで管理するために設定している
+RUN bundle config --local path vendor/bundle
 
 # バイナリのgemではなく、ソースコードからgemをビルドする設定
-RUN bundle config set force_ruby_platform true
+# RUN bundle config set force_ruby_platform true
 
 # bundle installでGemfileに記述されているgemをインストール
 RUN bundle install
